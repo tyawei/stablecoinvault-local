@@ -1,6 +1,6 @@
 # 使用node.js获取graph子图/监听合约事件记录的数据，提供API
 
-本项目通过本地localhost部署Solidity合约，通过node.js监听链上事件的数据产生，并使用graphQL获取本地graph子图数据，将历史数据存入Postgresql数据库，为前端提供链上数据API（由于 graph studio 的API 和 正式 IPFS 节点请求不通，本项目都在本地服务下进行）
+本项目通过本地localhost部署一个示例的Solidity合约，通过node.js监听链上事件的数据产生，并使用graphQL获取本地graph子图数据，将历史数据存入Postgresql数据库，为前端提供链上数据API（由于 graph studio 的API 和 正式 IPFS 节点请求不通，本项目都在本地服务下进行）
 
 ## 运行项目的准备
 
