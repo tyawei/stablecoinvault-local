@@ -1,0 +1,28 @@
+{
+  "name": "stablecoinvault-local",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ stablecoinvault-local",
+    "create-local": "graph create --node http://localhost:8020/ stablecoinvault-local",
+    "remove-local": "graph remove --node http://localhost:8020/ stablecoinvault-local",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 stablecoinvault-local",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.98.1",
+    "@graphprotocol/graph-ts": "0.37.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.17.0",
+    "express": "^5.2.1",
+    "graphql-request": "^7.4.0",
+    "node-cron": "^4.6.0",
+    "pg": "^8.22.0",
+    "prisma": "^7.9.0"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.6.0"
+  }
+}

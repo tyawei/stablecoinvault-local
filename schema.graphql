@@ -1,0 +1,63 @@
+type AdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  oldAdmin: Bytes! # address
+  newAdmin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Deposited @entity(immutable: true) {
+  id: Bytes!
+  orderId: BigInt! # uint256
+  user: Bytes! # address
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  maturityTime: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type GovernanceUpdated @entity(immutable: true) {
+  id: Bytes!
+  oldGovernance: Bytes! # address
+  newGovernance: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RedeemExecuted @entity(immutable: true) {
+  id: Bytes!
+  orderId: BigInt! # uint256
+  user: Bytes! # address
+  token: Bytes! # address
+  payoutTo: Bytes! # address
+  payoutAmount: BigInt! # uint256
+  settlementRef: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenConfigUpdated @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  supported: Boolean! # bool
+  minDepositAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TreasuryTransferred @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  to: Bytes! # address
+  amount: BigInt! # uint256
+  reason: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
