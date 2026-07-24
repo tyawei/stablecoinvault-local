@@ -50,4 +50,5 @@ CREATE TABLE depositeds (
 );
 ```
 
-完成后，运行 node server/index.js 开启node服务。可以再在 hardhat 项目运行 node scripts/handleFunc.ts 执行相关函数以触发 event 在node端看终端输出
+完成后，运行 node server/index.js 开启node服务。可以再在 hardhat 项目运行 node scripts/handleFunc.ts 执行相关函数以触发 event 在node端看终端相关输出；
+也可以在浏览器地址栏输入 http://localhost:3001/api/graph-depositeds 查询graph本地节点子图的数据
