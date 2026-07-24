@@ -15,6 +15,7 @@
 3. 完成docker桌面端设置后，在 graph 项目终端开启docker（项目中预置了docker-compose.yml，运行docker compose up -d），运行ipfs（初始化ipfs init、ipfs daemon）。再依次运行 npm run codegen、npm run build、npm run create-local、npm run deploy-local。如果终端出现报错：× HTTP error deploying the subgraph ETIMEOUT / × HTTP error deploying the subgraph ECONNRESET，通常是docker梯子没配置对、graph 本地有部署过但是改了代码后没清除旧的服务（运行 npm run remove-local再依次运行以上命令，或者docker桌面端删除旧的运行项目再重启）等。运行成功则如下log：
 
     ......
+    
     √ Upload subgraph to IPFS
 
     Build completed: QmZC6G6hC4onfS9JVN4vbW8TDkGeDWWzjNtdCxasvCBogA
@@ -33,5 +34,20 @@ RPC_URL=http://127.0.0.1:8545
 CONTRACT_ADDRESS=0x...
 SUBGRAPH_URL=http://127.0.0.1:8000/subgraphs/name/stablecoinvault-local
 DB_URL=postgresql://管理员名称:密码@localhost:5432/stablecoinvault
+以上 DB_URL 填写之前，需要建立 stablecoinvault 数据库，由于server端目前暂时只监听了合约中 deposited 事件，可以建一张表 depositeds ：
+```sql
+CREATE TABLE depositeds (
+  id SERIAL PRIMARY KEY,
+  order_id VARCHAR(64),
+  user_address VARCHAR(128),
+  token_address VARCHAR(128),
+  amount VARCHAR(64),
+  maturity_time VARCHAR(64),
+  block_number BIGINT,
+  block_timestamp BIGINT,
+  tx_hash VARCHAR(128),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
 
-配置完成后，运行 node server/index.js 开启node服务。可以再在 hardhat 项目运行 node scripts/handleFunc.ts 执行相关函数以触发 event 在node端看终端输出
+完成后，运行 node server/index.js 开启node服务。可以再在 hardhat 项目运行 node scripts/handleFunc.ts 执行相关函数以触发 event 在node端看终端输出
