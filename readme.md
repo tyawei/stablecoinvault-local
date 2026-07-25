@@ -34,7 +34,12 @@ RPC_URL=http://127.0.0.1:8545
 CONTRACT_ADDRESS=0x...
 SUBGRAPH_URL=http://127.0.0.1:8000/subgraphs/name/stablecoinvault-local
 DB_URL=postgresql://管理员名称:密码@localhost:5432/stablecoinvault
-以上 DB_URL 填写之前，需要建立 stablecoinvault 数据库，由于server端目前暂时只监听了合约中 deposited 事件，可以建一张表 depositeds ：
+以上 DB_URL 填写之前，先登录postgresql，建立 stablecoinvault 数据库并连接。由于server端目前暂时只监听了合约中 deposited 事件，可以建一张表 depositeds ：
+```sql
+psql -U postgres;
+CREATE DATABASE stablecoinvault;
+\c stablecoinvault;
+```
 ```sql
 CREATE TABLE depositeds (
   id SERIAL PRIMARY KEY,

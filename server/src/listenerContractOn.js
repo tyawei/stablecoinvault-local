@@ -1,4 +1,6 @@
-// ethers 监听链上事件
+// ethers contract.on 监听合约的链上事件
+// 通常用于单一合约、轻量业务
+// contract.on 原理是轮询
 
 const { ethers } = require("ethers");
 const dotenv = require('dotenv');
@@ -22,7 +24,8 @@ async function listenDepositeds() {
         // AI给出的优化建议，是在 hardhat 本地启用 url: "ws://127.0.0.1:8454"，通过const provider = new ethers.WebSocketProvider(wsUrl)
         // 再const filter = contract.filters.Deposited();provider.on(filter, async (log) => ...) 处理监听
         try {
-            console.log('Depositeds_data===', orderId, user, token, amount, maturityTime, contractEventPayload)
+            return console.log('Depositeds_data===', orderId, user, token, amount, maturityTime, contractEventPayload)
+
             const { blockNumber, blockHash, transactionHash, } = contractEventPayload.log || {};   
             const block = await contractEventPayload.getBlock();
             console.log('block===', block)

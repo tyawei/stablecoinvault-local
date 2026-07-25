@@ -2,9 +2,12 @@
 // 写一个监听 /api/graph-deposits 接口，返回 res.json(data)
 
 const express = require('express');
-const { queryDepositeds } = require('./src/data');
 const db = require('./src/db');
-const { listenDepositeds } = require('./src/listener');
+const { queryDepositeds } = require('./src/data');
+
+const { getLogsDeposited } = require('./src/getEventLogsFromBlocks')
+const { listenDepositeds } = require('./src/listenerContractOn');
+const { listenProviderOn } = require('./src/listenerWsProviderOn')
 
 const app = express();
 const port = 3001;
@@ -19,5 +22,7 @@ app.get('/api/graph-deposits', async (req, res) => {
 
 app.listen(port, async () => {
   console.log(`Server is running on http://localhost:${port}`);
-  await listenDepositeds(db);
+  // await listenDepositeds();
+  await listenProviderOn()
+  // await getLogsDeposited(0, 999)
 });
