@@ -16,18 +16,16 @@ const usdtAbi = [
 const iface = new ethers.Interface(abi)
 const tokenIface = new ethers.Interface(usdtAbi)
 
-// ws_rpc_url = ws://127.0.0.1:8545
-const wsProvider = new ethers.WebSocketProvider(process.env.WS_RPC_URL)
+async function listenContractEvent() {
 
-async function listenProviderOn() {
+    // hardhat部署的本地 localhost 网络
+    // ws_rpc_url = ws://127.0.0.1:8545
+    const wsProvider = new ethers.WebSocketProvider(process.env.WS_RPC_URL)
 
     const depositedTopic = iface.getEvent('Deposited').topicHash
     const goverUpdatedTopic = iface.getEvent('GovernanceUpdated').topicHash
 
-    const transferTopic = tokenIface.getEvent('Transfer').topicHash
-
-    // wsProvider._network.ensAddress = null
-
+    // wsProvider.on("block/pending/error") // 这里可以监听交易、新区块产生等
     wsProvider.on({
         address: process.env.CONTRACT_ADDRESS,  // 这里尝试[普通合约, 代币合约]，但是出先ensAddress 报错，或者network报错；不同合约尽量分开监听
         topics: [[depositedTopic, goverUpdatedTopic]]       // 多个事件必须二维数组
@@ -59,17 +57,35 @@ async function listenProviderOn() {
         } 
     })
 
-    // 这里报错：Error: network does not support ENS
-    // 可能是由于我本地部署 token 的rpc_url 不太合规，估计需要正式网rpc
-    wsProvider.on(
-    {
-      address: process.env.TOKEN_ADDRESS,
-      topics: [transferTopic]
-    }, async log => {
-        console.log("transfer_log", log)
-    })
+}
+
+async function listenTokenTransfer() {
+
+    try {
+        // const wsProvider = new ethers.WebSocketProvider('wss://eth-sepolia.api.onfinality.io/public-ws')
+        const wsProvider = new ethers.WebSocketProvider(process.env.INFURA_WS_RPC_URL)
+        const transferTopic = tokenIface.getEvent('Transfer').topicHash
+
+        // wsProvider.on("block/pending/error") // 这里可以监听交易、新区块产生等
+        wsProvider.on({
+            address: process.env.SEPOLIA_USDT,
+            topics: [transferTopic]
+        }, async log => {
+            console.log("transfer_log===", log)
+
+            // 多个事件时，log还是一个一个输出
+            const parsed = tokenIface.parseLog(log)
+            console.log('parsed===', parsed)
+            if (parsed && parsed.name === 'Transfer') {
+
+            }        
+        })
+    } catch(e) {
+        console.log('listen_error===', e)
+    }
 }
 
 module.exports = {
-    listenProviderOn
+    listenContractEvent,
+    listenTokenTransfer
 }
